@@ -5,10 +5,10 @@
 #include "phonebook_opt.h"
 
 /* FILL YOUR OWN IMPLEMENTATION HERE! */
-lastnameEntry *findName(char lastname[], lastnameEntry *pHead)
+entry *findName(char lastname[], entry *pHead)
 {
     /* TODO: implement */
-    lastnameEntry *e = pHead;
+    entry *e = pHead;
     int a = 0;
     while (e != NULL) {
         a = strcasecmp(lastname, e->lastName);
@@ -23,18 +23,18 @@ lastnameEntry *findName(char lastname[], lastnameEntry *pHead)
     return NULL;
 }
 
-lastnameEntry *append(char lastName[], lastnameEntry *pHead)
+entry *append(char lastName[], entry *pHead)
 {
-    lastnameEntry *temp;
-    temp = malloc(sizeof(lastnameEntry));
+    entry *temp;
+    temp = malloc(sizeof(entry));
     strcpy(temp->lastName, lastName);
     pHead = insertRBTree(pHead, temp);
     return pHead;
 }
 
-lastnameEntry *leftRotate(lastnameEntry *pHead, lastnameEntry *x)
+entry *leftRotate(entry *pHead, entry *x)
 {
-    lastnameEntry *y;
+    entry *y;
     y = x->pRight;
     x->pRight = y->pLeft;
     if (y->pLeft) {
@@ -53,9 +53,9 @@ lastnameEntry *leftRotate(lastnameEntry *pHead, lastnameEntry *x)
     return pHead;
 }
 
-lastnameEntry *rightRotate(lastnameEntry *pHead, lastnameEntry *x)
+entry *rightRotate(entry *pHead, entry *x)
 {
-    lastnameEntry *y;
+    entry *y;
     y = x->pLeft;
     x->pLeft = y->pRight;
     if (y->pRight) {
@@ -74,10 +74,10 @@ lastnameEntry *rightRotate(lastnameEntry *pHead, lastnameEntry *x)
     return pHead;
 }
 
-lastnameEntry *insertRBTree(lastnameEntry *pHead, lastnameEntry *newEntry)
+entry *insertRBTree(entry *pHead, entry *newEntry)
 {
-    lastnameEntry *y = NULL;
-    lastnameEntry *x = pHead;
+    entry *y = NULL;
+    entry *x = pHead;
     while (x) {
         y = x;
         if (strcasecmp(newEntry->lastName, x->lastName) < 0) {
@@ -88,10 +88,7 @@ lastnameEntry *insertRBTree(lastnameEntry *pHead, lastnameEntry *newEntry)
     }
     newEntry->pParent = y;
     if (y == NULL) {
-        pHead = newEntry;
-        pHead->pLeft = NULL;
-        pHead->pRight = NULL;
-        pHead->red = false;
+        strcpy(pHead->lastName, newEntry->lastName);
         return pHead;
     } else if (strcasecmp(newEntry->lastName, y->lastName) < 0) {
         y->pLeft = newEntry;
@@ -105,9 +102,9 @@ lastnameEntry *insertRBTree(lastnameEntry *pHead, lastnameEntry *newEntry)
     return pHead;
 }
 
-lastnameEntry *insertFixUp(lastnameEntry *pHead, lastnameEntry *z)
+entry *insertFixUp(entry *pHead, entry *z)
 {
-    lastnameEntry *y = NULL;
+    entry *y = NULL;
     while (z->pParent->red) {
         if (z->pParent == z->pParent->pParent->pLeft) {
             y = z->pParent->pParent->pRight;
@@ -150,9 +147,9 @@ lastnameEntry *insertFixUp(lastnameEntry *pHead, lastnameEntry *z)
     return pHead;
 }
 
-void freeRBTree(lastnameEntry *pHead)
+void freeNodepHead(entry *pHead)
 {
-    lastnameEntry *e, *curr;
+    entry *e, *curr;
     e = pHead;
     while (e) {
         if (e->pLeft) {
@@ -173,4 +170,17 @@ void freeRBTree(lastnameEntry *pHead)
         }
         free(curr);
     }
+}
+
+entry *init_pHead_pointer(entry *pHead)
+{
+    pHead->pLeft = NULL;
+    pHead->pRight = NULL;
+    pHead->red = false;
+    return pHead;
+}
+
+entry *pointer2pHead(entry *pHead, entry *e)
+{
+    return e;
 }

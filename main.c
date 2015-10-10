@@ -37,25 +37,15 @@ int main(int argc, char *argv[])
     }
 
     /* build the entry */
-#if defined(_PHONEBOOK_H)
     entry *pHead = NULL;
     entry *e = NULL;
     printf("size of entry : %lu bytes\n", sizeof(entry));
     pHead = (entry *) malloc(sizeof(entry));
+    pHead = init_pHead_pointer(pHead);
     e = pHead;
-    e->pNext = NULL;
+
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
-#endif
-#elif defined(_PHONEBOOK_OPT_H)
-    lastnameEntry *pHead = NULL;
-    lastnameEntry *e = NULL;
-    printf("size of lastnameEntry : %lu bytes\n", sizeof(lastnameEntry));
-    pHead = (lastnameEntry *) malloc(sizeof(lastnameEntry));
-    e = pHead;
-#if defined(__GNUC__)
-    __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(lastnameEntry));
-#endif
 #endif
 
     clock_gettime(CLOCK_REALTIME, &start);
@@ -64,11 +54,7 @@ int main(int argc, char *argv[])
             i++;
         line[i - 1] = '\0';
         i = 0;
-#if defined(_PHONEBOOK_H)
         e = append(line, e);
-#elif defined(_PHONEBOOK_OPT_H)
-        pHead = append(line, pHead);
-#endif
     }
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time1 = diff_in_second(start, end);
@@ -79,21 +65,17 @@ int main(int argc, char *argv[])
     /* the givn last name to find */
     char input[MAX_LAST_NAME_SIZE] = "zyxel";
 
-    e = pHead;
+    pHead = pointer2pHead(pHead, e);
 
 
-    assert(findName(input, e) &&
+    assert(findName(input, pHead) &&
            "Did you implement findName() in " IMPL "?");
-    assert(0 == strcmp(findName(input, e)->lastName, "zyxel"));
-#if defined(_PHONEBOOK_H)
+    assert(0 == strcmp(findName(input, pHead)->lastName, "zyxel"));
+
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
 #endif
-#elif defined(_PHONEBOOK_OPT_H)
-#if defined(__GNUC__)
-    __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(lastnameEntry));
-#endif
-#endif
+
     /* compute the execution time */
     clock_gettime(CLOCK_REALTIME, &start);
     findName(input, e);
@@ -104,11 +86,7 @@ int main(int argc, char *argv[])
     printf("execution time of findName() : %lf nsec\n", cpu_time2);
 
     /* FIXME: release all allocated entries */
-#if defined(_PHONEBOOK_OPT_H)
-    freeRBTree(pHead);
-#else
-    free(pHead);
-#endif
+    freeNodepHead(pHead);
 
     return 0;
 }

@@ -26,3 +26,19 @@ entry *append(char lastName[], entry *e)
 
     return e;
 }
+
+entry *init_pHead_pointer(entry *pHead)
+{
+    pHead->pNext = NULL;
+    return pHead;
+}
+
+entry *pointer2pHead(entry *pHead, entry *e)
+{
+    return pHead;
+}
+
+void freeNodepHead(entry *pHead)
+{
+    free(pHead);
+}

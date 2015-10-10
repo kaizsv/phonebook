@@ -5,16 +5,16 @@
 #define MAX_LAST_NAME_SIZE 16
 
 /* original version */
-typedef struct __LAST_NAME_ENTRY {
+typedef struct __PHONE_BOOK_ENTRY {
     char lastName[MAX_LAST_NAME_SIZE];
     bool red;
     struct __PHONE_BOOK_ENTRY *pDetail;
-    struct __LAST_NAME_ENTRY *pLeft;
-    struct __LAST_NAME_ENTRY *pRight;
-    struct __LAST_NAME_ENTRY *pParent;
-} lastnameEntry;
+    struct __PHONE_BOOK_ENTRY *pLeft;
+    struct __PHONE_BOOK_ENTRY *pRight;
+    struct __PHONE_BOOK_ENTRY *pParent;
+} entry;
 
-typedef struct __PHONE_BOOK_ENTRY {
+typedef struct __PHONE_BOOK_DETIAL {
     char firstName[16];
     char email[16];
     char phone[10];
@@ -24,14 +24,15 @@ typedef struct __PHONE_BOOK_ENTRY {
     char city[16];
     char state[2];
     char zip[5];
-} entry;
+} detial;
 
-lastnameEntry *findName(char lastname[], lastnameEntry *pHead);
-lastnameEntry *append(char lastName[], lastnameEntry *pHead);
-lastnameEntry *leftRotate(lastnameEntry *pHead, lastnameEntry *x);
-lastnameEntry *rightRotate(lastnameEntry *pHead, lastnameEntry *x);
-lastnameEntry *insertRBTree(lastnameEntry *pHead, lastnameEntry *newEntry);
-lastnameEntry *insertFixUp(lastnameEntry *pHead, lastnameEntry *z);
-void freeRBTree(lastnameEntry *pHead);
-
+entry *findName(char lastname[], entry *pHead);
+entry *append(char lastName[], entry *pHead);
+entry *leftRotate(entry *pHead, entry *x);
+entry *rightRotate(entry *pHead, entry *x);
+entry *insertRBTree(entry *pHead, entry *newEntry);
+entry *insertFixUp(entry *pHead, entry *z);
+void freeNodepHead(entry *pHead);
+entry *init_pHead_pointer(entry *pHead);
+entry *pointer2pHead(entry *pHead, entry *e);
 #endif

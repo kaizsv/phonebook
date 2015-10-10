@@ -8,8 +8,8 @@ perf = ./phonebook_opt
 SRCS_common = main.c
 
 phonebook_orig: $(SRCS_common) phonebook_orig.c phonebook_orig.h
-	$(CC) $(CFLAGS_common) -DIMPL="\"$@.h\"" -o $@ \ 
-	    $(SRCS_common) $@.c
+	$(CC) $(CFLAGS_common) -DIMPL="\"$@.h\"" -o $@ \
+		$(SRCS_common) $@.c
 
 phonebook_opt: $(SRCS_common) phonebook_opt.c phonebook_opt.h
 	$(CC) $(CFLAGS_common) -DIMPL="\"$@.h\"" -o $@ \
@@ -28,4 +28,4 @@ precord: $(perf)
 	perf record -e cache-misses:u $(perf) && perf report
 
 cache:
-	echo "echo 1 > /proc/sys/vm/drop_caches" | sudo sh && ./phonebook_opt
+	echo "echo 1 > /proc/sys/vm/drop_caches" | sudo sh && $(perf)
