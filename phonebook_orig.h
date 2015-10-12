@@ -20,7 +20,7 @@ typedef struct __PHONE_BOOK_ENTRY {
 
 entry *findName(char lastname[], entry *pHead);
 entry *append(char lastName[], entry *e);
-entry *init_pHead_pointer(entry *pHead);
+entry *imple_pHead(entry *pHead);
 entry *pointer2pHead(entry *pHead, entry *e);
 void freeNodepHead(entry *pHead);
 

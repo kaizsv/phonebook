@@ -27,7 +27,7 @@ entry *append(char lastName[], entry *e)
     return e;
 }
 
-entry *init_pHead_pointer(entry *pHead)
+entry *imple_pHead(entry *pHead)
 {
     pHead->pNext = NULL;
     return pHead;

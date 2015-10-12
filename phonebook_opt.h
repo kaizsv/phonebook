@@ -30,9 +30,9 @@ entry *findName(char lastname[], entry *pHead);
 entry *append(char lastName[], entry *pHead);
 entry *leftRotate(entry *pHead, entry *x);
 entry *rightRotate(entry *pHead, entry *x);
-entry *insertRBTree(entry *pHead, entry *newEntry);
-entry *insertFixUp(entry *pHead, entry *z);
+entry *insert_rbtree(entry *pHead, entry *newEntry);
+entry *fixContinuousRed(entry *pHead, entry *z);
 void freeNodepHead(entry *pHead);
-entry *init_pHead_pointer(entry *pHead);
+entry *imple_pHead(entry *pHead);
 entry *pointer2pHead(entry *pHead, entry *e);
 #endif

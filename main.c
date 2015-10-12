@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     entry *e = NULL;
     printf("size of entry : %lu bytes\n", sizeof(entry));
     pHead = (entry *) malloc(sizeof(entry));
-    pHead = init_pHead_pointer(pHead);
+    pHead = imple_pHead(pHead);
     e = pHead;
 
 #if defined(__GNUC__)
@@ -78,14 +78,14 @@ int main(int argc, char *argv[])
 
     /* compute the execution time */
     clock_gettime(CLOCK_REALTIME, &start);
-    findName(input, e);
+    findName(input, pHead);
     clock_gettime(CLOCK_REALTIME, &end);
-    cpu_time2 = end.tv_nsec - start.tv_nsec;
+    cpu_time2 = diff_in_second(start, end);
 
     printf("execution time of append() : %lf sec\n", cpu_time1);
-    printf("execution time of findName() : %lf nsec\n", cpu_time2);
+    printf("execution time of findName() : %lf sec\n", cpu_time2);
 
-    /* FIXME: release all allocated entries */
+    /* release all allocated entries */
     freeNodepHead(pHead);
 
     return 0;

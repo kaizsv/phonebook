@@ -4,21 +4,15 @@
 
 #include "phonebook_opt.h"
 
-/* FILL YOUR OWN IMPLEMENTATION HERE! */
 entry *findName(char lastname[], entry *pHead)
 {
-    /* TODO: implement */
+    /* implement */
     entry *e = pHead;
     int a = 0;
     while (e != NULL) {
-        a = strcasecmp(lastname, e->lastName);
-        if (a > 0) {
-            e = e->pRight;
-        } else if (a < 0) {
-            e = e->pLeft;
-        } else {
+        if ((a = strcasecmp(lastname, e->lastName)) == 0)
             return e;
-        }
+        e = (a > 0) ? e->pRight : e->pLeft;
     }
     return NULL;
 }
@@ -28,7 +22,7 @@ entry *append(char lastName[], entry *pHead)
     entry *temp;
     temp = malloc(sizeof(entry));
     strcpy(temp->lastName, lastName);
-    pHead = insertRBTree(pHead, temp);
+    pHead = insert_rbtree(pHead, temp);
     return pHead;
 }
 
@@ -74,7 +68,7 @@ entry *rightRotate(entry *pHead, entry *x)
     return pHead;
 }
 
-entry *insertRBTree(entry *pHead, entry *newEntry)
+entry *insert_rbtree(entry *pHead, entry *newEntry)
 {
     entry *y = NULL;
     entry *x = pHead;
@@ -98,50 +92,39 @@ entry *insertRBTree(entry *pHead, entry *newEntry)
     newEntry->pLeft = NULL;
     newEntry->pRight = NULL;
     newEntry->red = true;
-    pHead = insertFixUp(pHead, newEntry);
+    pHead = fixContinuousRed(pHead, newEntry);
     return pHead;
 }
 
-entry *insertFixUp(entry *pHead, entry *z)
+entry *fixContinuousRed(entry *pHead, entry *z)
 {
     entry *y = NULL;
+    bool zParent_is_left_node;
+    bool z_is_left_node;
     while (z->pParent->red) {
-        if (z->pParent == z->pParent->pParent->pLeft) {
-            y = z->pParent->pParent->pRight;
-            if (y == NULL || !y->red) {
-                if (z == z->pParent->pRight) {
-                    z = z->pParent;
-                    pHead = leftRotate(pHead, z);
-                }
-                z->pParent->red = false;
-                z->pParent->pParent->red = true;
-                pHead = rightRotate(pHead, z->pParent->pParent);
-            } else {
-                z->pParent->red = false;
-                y->red = false;
-                z->pParent->pParent->red = true;
-                z = z->pParent->pParent;
+        zParent_is_left_node = (z->pParent == z->pParent->pParent->pLeft);
+        y = zParent_is_left_node ? z->pParent->pParent->pRight : z->pParent->pParent->pLeft;
+        if (y == NULL || !y->red) {
+            z_is_left_node = (z == z->pParent->pLeft) ? true : false;
+            if (zParent_is_left_node && !z_is_left_node) {
+                z = z->pParent;
+                pHead = leftRotate(pHead, z);
+            } else if (!zParent_is_left_node && z_is_left_node) {
+                z = z->pParent;
+                pHead = rightRotate(pHead, z);
             }
+            z->pParent->red = false;
+            z->pParent->pParent->red = true;
+            pHead = zParent_is_left_node ?
+                    rightRotate(pHead, z->pParent->pParent) : leftRotate(pHead, z->pParent->pParent);
         } else {
-            y = z->pParent->pParent->pLeft;
-            if (y == NULL || !y->red) {
-                if (z == z->pParent->pLeft) {
-                    z = z->pParent;
-                    pHead = rightRotate(pHead, z);
-                }
-                z->pParent->red = false;
-                z->pParent->pParent->red = true;
-                pHead = leftRotate(pHead, z->pParent->pParent);
-            } else {
-                z->pParent->red = false;
-                y->red = false;
-                z->pParent->pParent->red = true;
-                z = z->pParent->pParent;
-            }
+            z->pParent->red = false;
+            y->red = false;
+            z->pParent->pParent->red = true;
+            z = z->pParent->pParent;
         }
-        if (z->pParent == NULL) {
+        if (z->pParent == NULL)
             break;
-        }
     }
     pHead->red = false;
     return pHead;
@@ -172,7 +155,7 @@ void freeNodepHead(entry *pHead)
     }
 }
 
-entry *init_pHead_pointer(entry *pHead)
+entry *imple_pHead(entry *pHead)
 {
     pHead->pLeft = NULL;
     pHead->pRight = NULL;
