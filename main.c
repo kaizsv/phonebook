@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
     FILE *fp;
     int i = 0;
     char line[MAX_LAST_NAME_SIZE];
-    char input[MAX_LAST_NAME_SIZE] = "zyxel";
     struct timespec start, end;
     double cpu_time1, cpu_time2;
 
@@ -65,6 +64,7 @@ int main(int argc, char *argv[])
     fclose(fp);
 
     /* the givn last name to find */
+    char input[MAX_LAST_NAME_SIZE];
     printf("last name search: ");
     scanf("%s", input);
     while (input[i] != '\0') {
