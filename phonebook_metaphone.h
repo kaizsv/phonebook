@@ -167,7 +167,7 @@ void metaphone(char *lastName, char *metaph, int metalen)
             case 'w':
             case 'y':
                 if (strchr(VOWELS,next1char) != 0)
-                    strncat(metaph, "y", 1);
+                    strncat(metaph, &lastName[i], 1);
                 else
                     silent = TRUE;
                 break;
