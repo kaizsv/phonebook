@@ -3,10 +3,10 @@
 #include <stdio.h>
 
 #include "phonebook_opt.h"
+#include "phonebook_metaphone.h"
 
 entry *findName(char lastname[], entry *pHead, entry **ht)
 {
-    /* TODO: implement */
     entry *temp;
     int value = hash(lastname);
     temp = ht[value];
@@ -29,9 +29,11 @@ entry *append(char lastName[], entry *pHead, entry **ht)
         }
         e->pNext = (entry *) malloc(sizeof(entry));
         strcpy(e->pNext->lastName, lastName);
+        metaphone(lastName, e->metaph, 16);
     } else {
         e = (entry *) malloc(sizeof(entry));
         strcpy(e->lastName, lastName);
+        metaphone(lastName, e->metaph, 16);
         ht[value] = e;
     }
     return NULL;

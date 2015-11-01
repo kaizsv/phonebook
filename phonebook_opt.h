@@ -7,6 +7,7 @@
 /* original version */
 typedef struct __PHONE_BOOK_ENTRY {
     char lastName[MAX_LAST_NAME_SIZE];
+    char metaph[MAX_LAST_NAME_SIZE];
     int hashvalue;
     struct __PHONE_BOOK_DETIAL *pDetial;
     struct __PHONE_BOOK_ENTRY *pNext;
