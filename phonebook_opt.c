@@ -15,6 +15,20 @@ entry *findName(char lastname[], entry *pHead, entry **ht)
             return temp;
         temp = temp->pNext;
     }
+
+    /* string not found !! */
+    char meta[MAX_LAST_NAME_SIZE];
+    metaphone(lastname, meta, MAX_LAST_NAME_SIZE);
+    printf("Did you mean:\n");
+    for (int i = 0; i < HASH_SIZE; i++) {
+        temp = ht[i];
+        while(temp != NULL) {
+            if (strcmp(meta, temp->metaph) == 0)
+                printf(ANSI_COLOR_RED"%s\n", temp->lastName);
+            temp = temp->pNext;
+        }
+    }
+    printf(ANSI_COLOR_RESET"\n");
     return NULL;
 }
 
@@ -29,9 +43,11 @@ entry *append(char lastName[], entry *pHead, entry **ht)
         }
         e->pNext = (entry *) malloc(sizeof(entry));
         strcpy(e->pNext->lastName, lastName);
+        metaphone(lastName, e->pNext->metaph, MAX_LAST_NAME_SIZE);
     } else {
         e = (entry *) malloc(sizeof(entry));
         strcpy(e->lastName, lastName);
+        metaphone(lastName, e->metaph, MAX_LAST_NAME_SIZE);
         ht[value] = e;
     }
     return NULL;

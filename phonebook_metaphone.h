@@ -18,8 +18,6 @@ void metaphone(char *lastName, char *metaph, int metalen)
     if ((string_length = strlen(lastName)) == 0)
         return;
 
-    // XXX : change to lower
-
     /* Drop the first letter if ae, gn, kn, pn, wr */
     if ((chrptr = strchr(excepPAIR, lastName[0])) != 0) {
         chrptr1 = excepNEXT + (chrptr - excepPAIR);
@@ -123,6 +121,7 @@ void metaphone(char *lastName, char *metaph, int metalen)
             case 'm':
             case 'n':
             case 'r':
+            case 'u':
                 strncat(metaph, &lastName[i], 1);
                 break;
             case 'k':

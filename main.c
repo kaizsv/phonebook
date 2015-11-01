@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <assert.h>
+#include <ctype.h>
 
 #include IMPL
 
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
     FILE *fp;
     int i = 0;
     char line[MAX_LAST_NAME_SIZE];
+    char input[MAX_LAST_NAME_SIZE] = "zyxel";
     struct timespec start, end;
     double cpu_time1, cpu_time2;
 
@@ -63,13 +65,31 @@ int main(int argc, char *argv[])
     fclose(fp);
 
     /* the givn last name to find */
-    char input[MAX_LAST_NAME_SIZE] = "zyxel";
+    printf("last name search: ");
+    scanf("%s", input);
+    while (input[i] != '\0') {
+        if (isalpha(input[i])) {
+            if (isupper(input[i]))
+                input[i] = tolower(input[i]);
+        } else {
+            printf("\nerr: alphabetic only.");
+            return -1;
+        }
+        i++;
+    }
 
     e = pHead;
 
-    assert(findName(input, e, ht) &&
+    /*assert(findName(input, e, ht) &&
            "Did you implement findName() in " IMPL "?");
-    assert(0 == strcmp(findName(input, e, ht)->lastName, input));
+    assert(0 == strcmp(findName(input, e, ht)->lastName, input));*/
+
+    clock_gettime(CLOCK_REALTIME, &start);
+    if (findName(input, e, ht) == NULL) {
+        printf("err: string not found.\n");
+        clock_gettime(CLOCK_REALTIME, &end);
+        return -1;
+    }
 
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
@@ -81,6 +101,7 @@ int main(int argc, char *argv[])
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time2 = diff_in_msecond(start, end);
 
+    printf("last name found!!\n");
     printf("execution time of append() : %lf msec\n", cpu_time1);
     printf("execution time of findName() : %lf msec\n", cpu_time2);
     display_hash_imformation(ht);

@@ -4,6 +4,9 @@
 #define MAX_LAST_NAME_SIZE 16
 #define HASH_SIZE 349903
 
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_RESET "\x1b[0m"
+
 /* original version */
 typedef struct __PHONE_BOOK_ENTRY {
     char lastName[MAX_LAST_NAME_SIZE];
