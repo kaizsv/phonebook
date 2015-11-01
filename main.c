@@ -8,7 +8,7 @@
 
 #define DICT_FILE "./dictionary/words.txt"
 
-static double diff_in_second(struct timespec t1, struct timespec t2)
+static double diff_in_msecond(struct timespec t1, struct timespec t2)
 {
     struct timespec diff;
     if (t2.tv_nsec-t1.tv_nsec < 0) {
@@ -18,7 +18,7 @@ static double diff_in_second(struct timespec t1, struct timespec t2)
         diff.tv_sec  = t2.tv_sec - t1.tv_sec;
         diff.tv_nsec = t2.tv_nsec - t1.tv_nsec;
     }
-    return (diff.tv_sec + diff.tv_nsec / 1000000000.0);
+    return (diff.tv_sec + diff.tv_nsec / 1000000.0);
 }
 
 int main(int argc, char *argv[])
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
         e = append(line, e, ht);
     }
     clock_gettime(CLOCK_REALTIME, &end);
-    cpu_time1 = diff_in_second(start, end);
+    cpu_time1 = diff_in_msecond(start, end);
 
     /* close file as soon as possible */
     fclose(fp);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
     assert(findName(input, e, ht) &&
            "Did you implement findName() in " IMPL "?");
-    assert(0 == strcmp(findName(input, e, ht)->lastName, "zyxel"));
+    assert(0 == strcmp(findName(input, e, ht)->lastName, input));
 
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
@@ -79,10 +79,10 @@ int main(int argc, char *argv[])
     clock_gettime(CLOCK_REALTIME, &start);
     findName(input, e, ht);
     clock_gettime(CLOCK_REALTIME, &end);
-    cpu_time2 = diff_in_second(start, end);
+    cpu_time2 = diff_in_msecond(start, end);
 
-    printf("execution time of append() : %lf sec\n", cpu_time1);
-    printf("execution time of findName() : %lf nsec\n", cpu_time2);
+    printf("execution time of append() : %lf msec\n", cpu_time1);
+    printf("execution time of findName() : %lf msec\n", cpu_time2);
     display_hash_imformation(ht);
 
     /* release all allocated entries */

@@ -8,7 +8,7 @@
 entry *findName(char lastname[], entry *pHead, entry **ht)
 {
     entry *temp;
-    int value = hash(lastname);
+    unsigned int value = hash(lastname);
     temp = ht[value];
     while(temp != NULL) {
         if (strcmp(lastname, temp->lastName) == 0)
@@ -20,7 +20,7 @@ entry *findName(char lastname[], entry *pHead, entry **ht)
 
 entry *append(char lastName[], entry *pHead, entry **ht)
 {
-    int value = hash(lastName);
+    unsigned int value = hash(lastName);
     entry *e = ht[value];
 
     if (e) {
@@ -29,11 +29,9 @@ entry *append(char lastName[], entry *pHead, entry **ht)
         }
         e->pNext = (entry *) malloc(sizeof(entry));
         strcpy(e->pNext->lastName, lastName);
-        metaphone(lastName, e->metaph, 16);
     } else {
         e = (entry *) malloc(sizeof(entry));
         strcpy(e->lastName, lastName);
-        metaphone(lastName, e->metaph, 16);
         ht[value] = e;
     }
     return NULL;
@@ -48,16 +46,14 @@ entry **imple_hash_table(entry **ht)
     return ht;
 }
 
-int hash(char *key)
+unsigned int hash(char *key)
 {
-    int value = 0;
+    unsigned int value = 5381;
     while (*key != '\0') {
-        value = (value >> 4) + ((value & 15) << 14);
-        value += *key;
-        value &= 0x3ffff;
+        value = ((value << 5) + value) + *key;
         key++;
     }
-    return value;
+    return value % HASH_SIZE;
 }
 
 void freeNode(entry *pHead, entry **ht)

@@ -2,7 +2,7 @@
 #define _PHONEBOOK_OPT_H
 
 #define MAX_LAST_NAME_SIZE 16
-#define HASH_SIZE 262147
+#define HASH_SIZE 349903
 
 /* original version */
 typedef struct __PHONE_BOOK_ENTRY {
@@ -28,7 +28,7 @@ typedef struct __PHONE_BOOK_DETIAL {
 entry *findName(char lastname[], entry *pHead, entry **ht);
 entry *append(char lastName[], entry *pHead, entry **ht);
 entry **imple_hash_table(entry **ht);
-int hash(char *lastName);
+unsigned int hash(char *lastName);
 void freeNode(entry *pHead, entry **ht);
 int count_hash_buckets(entry **ht);
 void display_hash_imformation(entry **ht);
