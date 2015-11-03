@@ -4,7 +4,6 @@
 char VOWELS[] = "AEIOU";
 char FRONTV[] = "EIY";   /* special cases for letters in FRONT of these */
 char VARSON[] = "CSPTG"; /* variable sound--those modified by adding an "h" */
-char DOUBLE[] = ".";     /* let these double letters through */
 
 char excepPAIR[] = "AGKPW"; /* exceptions "ae-", "gn-", "kn-", "pn-", "wr-" */
 char excepNEXT[] = "ENNNR";
@@ -121,7 +120,6 @@ void metaphone(char *lastName, char *metaph, int metalen)
             case 'm':
             case 'n':
             case 'r':
-            case 'u':
                 strncat(metaph, &lastName[i], 1);
                 break;
             case 'k':

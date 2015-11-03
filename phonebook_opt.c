@@ -17,18 +17,27 @@ entry *findName(char lastname[], entry *pHead, entry **ht)
     }
 
     /* string not found !! */
-    char meta[MAX_LAST_NAME_SIZE];
+    char meta[MAX_LAST_NAME_SIZE] = "";
+    int isFuzzy = FALSE;
     metaphone(lastname, meta, MAX_LAST_NAME_SIZE);
-    printf("Did you mean:\n");
+    printf("Fuzzy search:\n");
     for (int i = 0; i < HASH_SIZE; i++) {
         temp = ht[i];
         while(temp != NULL) {
-            if (strcmp(meta, temp->metaph) == 0)
+            if (strcmp(temp->metaph, meta) == 0) {
+                printf("Did you mean: ");
                 printf(ANSI_COLOR_RED"%s\n", temp->lastName);
+                printf(ANSI_COLOR_RESET"");
+                isFuzzy = TRUE;
+            }
             temp = temp->pNext;
         }
     }
-    printf(ANSI_COLOR_RESET"\n");
+    if (isFuzzy) {
+        temp  = malloc(sizeof(entry));
+        strcpy(temp->lastName, meta);
+        return temp;
+    }
     return NULL;
 }
 

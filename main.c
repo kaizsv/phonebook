@@ -80,16 +80,8 @@ int main(int argc, char *argv[])
 
     e = pHead;
 
-    /*assert(findName(input, e, ht) &&
-           "Did you implement findName() in " IMPL "?");
-    assert(0 == strcmp(findName(input, e, ht)->lastName, input));*/
-
-    clock_gettime(CLOCK_REALTIME, &start);
-    if (findName(input, e, ht) == NULL) {
-        printf("err: string not found.\n");
-        clock_gettime(CLOCK_REALTIME, &end);
-        return -1;
-    }
+    assert(0 == strcmp(findName(input, e, ht)->lastName, input) &&
+           "Fuzzy search, string not found!");
 
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
@@ -101,7 +93,6 @@ int main(int argc, char *argv[])
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time2 = diff_in_msecond(start, end);
 
-    printf("last name found!!\n");
     printf("execution time of append() : %lf msec\n", cpu_time1);
     printf("execution time of findName() : %lf msec\n", cpu_time2);
     display_hash_imformation(ht);
